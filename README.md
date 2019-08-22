@@ -182,6 +182,7 @@ Bước 11: Tạo lớp Bootstrapper
 ModuleManager.DefaultManager.Navigate(Region.[RightHost], Modules.[SinhVien]);
 
 •	Trong MainWindown.xaml
+
 Bước 12: Khai báo mô hình mvvm
 
 	<Window 
