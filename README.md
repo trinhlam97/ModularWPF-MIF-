@@ -17,7 +17,7 @@ Bước 1: Tạo Region.cs chứa các thuộc tính là vị trí hiển thị 
         public static string Documents { get { return "Documents"; } }
         public static string WindowedDocuments { get { return "WindowedDocuments"; } }
         public static string DialogDocuments { get { return "DialogDocuments"; } }
-}
+	}
 
 
 Bước 2: Tạo Common.cs chứa từ khóa
@@ -27,7 +27,7 @@ Bước 2: Tạo Common.cs chứa từ khóa
         public static string Main { get { return "Main"; } }
         public static string GiaoVien { get { return "GiaoVien"; } }
         public static string SinhVien { get { return "SinhVien"; } }
-}
+	}
 
 2.	Trong project ModuleGiaoVien
 
@@ -67,7 +67,7 @@ Bước 7: Tạo Giao diện cho cửa số chính
 Bước 8: Add Reference… -> Projects ->Common,ModuleGiaoVien,ModuleSinhVien
 •	Trong Setting.Designer.cs 
 
-	Bước 9: Kiểm tra giống với đoạn code dưới không, nếu giống thì không cần chỉnh sửa 
+Bước 9: Kiểm tra giống với đoạn code dưới không, nếu giống thì không cần chỉnh sửa 
   
   
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -119,7 +119,7 @@ Bước 8: Add Reference… -> Projects ->Common,ModuleGiaoVien,ModuleSinhVien
 
 •	Trong App.xaml.cs
 
-		Bước 10: Thêm đoạn code
+Bước 10: Thêm đoạn code
     
 		protected override void OnStartup(StartupEventArgs e)
         {
@@ -133,7 +133,7 @@ Bước 8: Add Reference… -> Projects ->Common,ModuleGiaoVien,ModuleSinhVien
             base.OnExit(e);
         }
 
-		Bước 11: Tạo lớp Bootstrapper
+Bước 11: Tạo lớp Bootstrapper
 
     public partial class Bootstrapper
     {
@@ -181,3 +181,32 @@ Bước 8: Add Reference… -> Projects ->Common,ModuleGiaoVien,ModuleSinhVien
 
 ModuleManager.DefaultManager.Navigate(Region.[RightHost], Modules.[SinhVien]);
 
+•	Trong MainWindown.xaml
+Bước 12: Khai báo mô hình mvvm
+
+	<Window 
+        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+       	>
+Bước 13: Sử dụng DockLayoutManager để tạo khối hiển thị
+
+	<grid>
+	<dxdo:DockLayoutManager FloatingMode="Desktop" ClosedPanelsBarVisibility="Never">
+                <dxdo:DockLayoutManager.Resources>
+                    <Style x:Key="documentStyle" TargetType="dxdo:LayoutPanel">
+                        <Setter Property="Caption" Value="{Binding Caption}"/>
+                        <Setter Property="IsActive" Value="{Binding IsActive, Mode=TwoWay}"/>
+                    </Style>
+                </dxdo:DockLayoutManager.Resources>
+                <dxdo:LayoutGroup Orientation="Horizontal">
+                    <dxdo:LayoutGroup Name="LeftHost" DestroyOnClosingChildren="False" ItemWidth="200" Orientation="Vertical" ItemStyle="{StaticResource documentStyle}"
+                                          dxmvvm:UIRegion.Region="{x:Static common:Region.LeftHost}"/>
+                    <dxdo:LayoutGroup Name="ClientHost" Orientation="Vertical">
+                        <dxdo:DocumentGroup Name="RegionDocuments" DestroyOnClosingChildren="False" ItemStyle="{StaticResource documentStyle}"
+                                                dxmvvm:UIRegion.Region="{x:Static common:Region.Documents}" ClosingBehavior="ImmediatelyRemove"/>
+                    </dxdo:LayoutGroup>
+                    <dxdo:TabbedGroup Name="RightHost" DestroyOnClosingChildren="False" ItemWidth="260" ItemStyle="{StaticResource documentStyle}"
+                                          dxmvvm:UIRegion.Region="{x:Static common:Region.RightHost}"/>
+                </dxdo:LayoutGroup>
+            </dxdo:DockLayoutManager>
+        </DockPanel>
+	</grid>
